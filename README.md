@@ -1,4 +1,4 @@
-# TCH - Programming Assignment
+# Charter communications - Programming Assignment
 
 ## Getting Started
 
