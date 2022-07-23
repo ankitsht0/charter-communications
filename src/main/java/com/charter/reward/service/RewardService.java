@@ -57,8 +57,7 @@ public class RewardService {
     protected Reward from(List<Purchase> purchases) {
         Preconditions.checkArgument(!purchases.isEmpty(),
             new ResponseStatusException(
-                HttpStatus.OK, String.format("Customer has no purchases"
-            )));
+                HttpStatus.OK, NO_PURCHASE_MESSAGE));
         log.info("purchase list {}", purchases);
         final Map<Month, Long> pointsByMonth = new HashMap<>();
         purchases.stream()
