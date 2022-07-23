@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,14 @@ public class RewardService {
     @Autowired
     public RewardService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
+    }
+
+    public List<Reward> allRewards() {
+        return this.customerRepository.findAll()
+            .stream()
+            .map(Customer::getId)
+            .map(this::rewardByCustomerId)
+            .collect(Collectors.toList());
     }
 
     public Reward rewardByCustomerId(@NotNull Long customerId) {

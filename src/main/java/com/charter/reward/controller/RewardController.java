@@ -2,11 +2,14 @@ package com.charter.reward.controller;
 
 import com.charter.reward.model.Reward;
 import com.charter.reward.service.RewardService;
+import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -21,15 +24,13 @@ public class RewardController {
         this.rewardService = rewardService;
     }
 
-    @GetMapping("/{customerId}")
-    public Reward getRewardByCustomerId(@PathVariable Long customerId) {
-        log.info("RewardController::getRewardByCustomerId {}", customerId);
+    @GetMapping
+    public List<Reward> getRewards(@RequestParam Optional<Long> customerId) {
+        log.info("RewardController::getRewards {}", customerId);
 
-        return this.rewardService.rewardByCustomerId(customerId);
+        return customerId
+            .map(this.rewardService::rewardByCustomerId)
+            .map(List::of)
+            .orElseGet(this.rewardService::allRewards);
     }
-
-//    @GetMapping
-//    public List<Reward> getAllRewards(@RequestParam("name") Optional<Long> customerId) {
-//
-//    }
 }
