@@ -4,6 +4,7 @@ import com.charter.reward.model.Customer;
 import com.charter.reward.model.Purchase;
 import com.charter.reward.model.Reward;
 import com.charter.reward.repository.CustomerRepository;
+import com.charter.reward.util.Preconditions;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -54,10 +55,10 @@ public class RewardService {
     }
 
     protected Reward from(List<Purchase> purchases) {
-        if (purchases.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.OK,
-                String.format("Customer has no purchases"));
-        }
+        Preconditions.checkArgument(!purchases.isEmpty(),
+            new ResponseStatusException(
+                HttpStatus.OK, String.format("Customer has no purchases"
+            )));
         log.info("purchase list {}", purchases);
         final Map<Month, Long> pointsByMonth = new HashMap<>();
         purchases.stream()
